@@ -15,12 +15,12 @@
 </div>
 
 <div class="container">
-    <form id="post-form" method="POST" action="checkview">
+    <form id="post-form" method="POST" action="{% url 'check-view' %}">
         {% csrf_token %}
         <label>Room Name</label>
         <input type="text" name="room_name" id="room_name" width="100px" />
         <label>Username</label>
-        <input type="text" name="username" id="username" width="100px" />
+        <input type="text" name="user_name" id="user_name" width="100px" />
         <input type="submit" value="Enter Room">
     </form>
 </div>

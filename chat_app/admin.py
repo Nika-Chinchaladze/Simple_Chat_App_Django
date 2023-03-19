@@ -6,6 +6,7 @@ from .models import Room, Message
 
 class RoomAdmin(admin.ModelAdmin):
     list_display = ("name",)
+    prepopulated_fields = {"slug": ("name",)}
 
 
 class MessageAdmin(admin.ModelAdmin):
