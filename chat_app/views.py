@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 
 
 from .models import Room, Message
@@ -52,3 +52,11 @@ def send(request):
         )
         new_message.save()
         return HttpResponse("Message has been sent, Successfully!")
+
+
+def get_message(request, room):
+    chosen_room = Room.objects.get(name=room)
+    messages = Message.objects.filter(room=chosen_room).all()
+    return JsonResponse({
+        "messages": list(messages.values())
+    })
