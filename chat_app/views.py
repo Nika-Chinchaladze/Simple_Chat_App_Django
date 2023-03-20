@@ -5,15 +5,27 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from .forms import RegisterModelForm
+from .forms import RegisterModelForm, LoginModelForm, HomeForm
 from .models import Room, Message
 
 # Create your views here.
 
 
-def register(request):
+
+# ====================================== AUTHENTICATION SECTION ======================================= #
+def register_user(request):
+    present_user = request.user
     if request.method == "POST":
-        pass
+        form = RegisterModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            current_user = authenticate(
+                request,
+                username=form.cleaned_data["username"],
+                password=form.cleaned_data["password1"]
+            )
+            login(request, current_user)
+            return HttpResponseRedirect(reverse("personal-page"))
     else:
         form = RegisterModelForm()
         return render(request, "chat/register.html", {
@@ -21,11 +33,47 @@ def register(request):
         })
 
 
-def index(request):
-    return render(request, "chat/home.html")
+def login_user(request):
+    present_user = request.user
+    if request.method == "POST":
+        form = LoginModelForm(request, data=request.POST)
+        if form.is_valid():
+            current_user = form.get_user()
+            if current_user is not None:
+                login(request, current_user)
+                return HttpResponseRedirect(reverse("personal-page"))
+    else:
+        form = LoginModelForm()
+        return render(request, "chat/login.html", {
+            "form": form
+        })
 
 
+@login_required
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("login-user"))
+
+
+# ====================================== ENDING SECTION ======================================= #
+def start(request):
+    return HttpResponseRedirect(reverse("login-user"))
+
+
+@login_required
+def personal_page(request):
+    present_user = request.user
+    form = HomeForm()
+    current_user = request.user
+    return render(request, "chat/home.html", {
+        "form": form,
+        "user": current_user
+    })
+
+
+@login_required
 def room(request, room, username):
+    present_user = request.user
     room_details = Room.objects.get(name=room)
     return render(request, "chat/room.html", {
         "room": room,
@@ -34,6 +82,7 @@ def room(request, room, username):
     })
 
 
+@login_required
 def checkview(request):
     if request.method == "POST":
         room_name = request.POST["room_name"]
@@ -53,6 +102,7 @@ def checkview(request):
             }))
 
 
+@login_required
 def send(request):
     if request.method == "POST":
         user_name = request.POST["username"]
@@ -68,6 +118,7 @@ def send(request):
         return HttpResponse("Message has been sent, Successfully!")
 
 
+@login_required
 def get_message(request, room):
     chosen_room = Room.objects.get(name=room)
     messages = Message.objects.filter(room=chosen_room).all()

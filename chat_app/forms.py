@@ -22,3 +22,22 @@ class RegisterModelForm(UserCreationForm):
         self.fields["username"].widget.attrs["class"] = "form-control"
         self.fields["password1"].widget.attrs["class"] = "form-control"
         self.fields["password2"].widget.attrs["class"] = "form-control"
+
+
+class LoginModelForm(AuthenticationForm):
+    class Meta:
+        model = User
+        fields = ("username", "password",)
+
+    def __init__(self, *args, **kwargs):
+        super(LoginModelForm, self).__init__(*args, **kwargs)
+
+        self.fields["username"].widget.attrs["class"] = "form-control"
+        self.fields["password"].widget.attrs["class"] = "form-control"
+
+
+class HomeForm(forms.Form):
+    room_name = forms.CharField(
+        max_length=1000, widget=forms.TextInput(attrs={"class": "form-control"}))
+    user_name = forms.CharField(
+        max_length=1000, widget=forms.TextInput(attrs={"class": "form-control"}))

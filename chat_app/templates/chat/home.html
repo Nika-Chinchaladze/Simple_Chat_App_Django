@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-  <title>Index Page</title>
+  <title>Personal Page</title>
 {% endblock %}
 
 {% block css_styles %}
@@ -10,18 +10,15 @@
 {% endblock %}
   
 {% block content %}
-<div align="center">
-  <h2>Chat Application</h2>
+<div align="center" class="mt-5">
+  <h2>Hello {{ user.username }}</h2>
 </div>
 
 <div class="container">
     <form id="post-form" method="POST" action="{% url 'check-view' %}">
         {% csrf_token %}
-        <label>Room Name</label>
-        <input type="text" name="room_name" id="room_name" width="100px" />
-        <label>Username</label>
-        <input type="text" name="user_name" id="user_name" width="100px" />
-        <input type="submit" value="Enter Room">
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success rounded-1 w-100">Enter To Chat</button>
     </form>
 </div>
 {% endblock %}
