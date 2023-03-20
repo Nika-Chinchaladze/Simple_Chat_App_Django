@@ -1,10 +1,24 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
-
+from .forms import RegisterModelForm
 from .models import Room, Message
+
 # Create your views here.
+
+
+def register(request):
+    if request.method == "POST":
+        pass
+    else:
+        form = RegisterModelForm()
+        return render(request, "chat/register.html", {
+            "form": form
+        })
 
 
 def index(request):
