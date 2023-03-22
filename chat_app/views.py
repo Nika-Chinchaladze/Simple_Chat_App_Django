@@ -29,7 +29,8 @@ def register_user(request):
     else:
         form = RegisterModelForm()
         return render(request, "chat/register.html", {
-            "form": form
+            "form": form,
+            "user": present_user
         })
 
 
@@ -45,7 +46,8 @@ def login_user(request):
     else:
         form = LoginModelForm()
         return render(request, "chat/login.html", {
-            "form": form
+            "form": form,
+            "user": present_user
         })
 
 
@@ -62,7 +64,6 @@ def start(request):
 
 @login_required
 def personal_page(request):
-    present_user = request.user
     form = HomeForm()
     current_user = request.user
     return render(request, "chat/home.html", {
@@ -78,7 +79,8 @@ def room(request, room, username):
     return render(request, "chat/room.html", {
         "room": room,
         "username": username,
-        "room_details": room_details
+        "room_details": room_details,
+        "user": present_user
     })
 
 
