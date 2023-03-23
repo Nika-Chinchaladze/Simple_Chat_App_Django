@@ -1,79 +1,97 @@
-body {
-margin: 0 auto;
-max-width: 800px;
-padding: 0 20px;
-}
-
-.container {
-border: 2px solid #dedede;
-background-color: #f1f1f1;
-border-radius: 5px;
-padding: 10px;
-margin: 10px 0;
+.my-container {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    padding: 50px 100px;
 }
 
 .darker {
-border-color: #ccc;
-background-color: #ddd;
+    border-color: #ccc;
+    background-color: #ddd;
 }
 
-.container::after {
-content: "";
-clear: both;
-display: table;
+.my-container::after {
+    content: "";
+    clear: both;
+    display: table;
 }
 
-.container img {
-float: left;
-max-width: 60px;
-width: 100%;
-margin-right: 20px;
-border-radius: 50%;
+.my-container img {
+    float: left;
+    max-width: 60px;
+    width: 100%;
+    margin-right: 20px;
+    border-radius: 50%;
 }
 
-.container img.right {
-float: right;
-margin-left: 20px;
-margin-right:0;
+.my-container img.right {
+    float: right;
+    margin-left: 20px;
+    margin-right:0;
 }
 
 .time-right {
-float: right;
-color: #aaa;
+    float: right;
+    color: #aaa;
 }
 
 .time-left {
-float: left;
-color: #999;
+    float: left;
+    color: #999;
 }
 
 input[type=text], select {
-width: 100%;
-padding: 12px 20px;
-margin: 8px 0;
-display: inline-block;
-border: 1px solid #ccc;
-border-radius: 4px;
-box-sizing: border-box;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 input[type=submit] {
-width: 100%;
-background-color: #4CAF50;
-color: white;
-padding: 14px 20px;
-margin: 8px 0;
-border: none;
-border-radius: 4px;
-cursor: pointer;
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 input[type=submit]:hover {
-background-color: #45a049;
+    background-color: #45a049;
 }
 
-div {
-border-radius: 5px;
-background-color: #f2f2f2;
-padding: 20px;
+.grid-container {
+    width: 85%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 100px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: #a8d187cc;
+    padding: 10px;
+    border-radius: 5px;
+}
+.grid-item {
+    display: block;
+    background-color: rgba(29, 100, 32, 0.678);
+    color: white;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px;
+    border-radius: 5px;
+}
+.grid-item:hover {
+    background-color: antiquewhite;
+    color: rgba(3, 3, 70, 0.897);
 }

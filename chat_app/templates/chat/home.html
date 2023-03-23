@@ -14,11 +14,20 @@
   <h2>Hello {{ user.username }}</h2>
 </div>
 
-<div class="container">
+<div class="my-container">
     <form id="post-form" method="POST" action="{% url 'check-view' %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-success rounded-1 w-100">Enter To Chat</button>
+        <button type="submit" class="btn btn-success rounded-1 w-100">Create</button>
     </form>
 </div>
+
+<!-- Available Rooms -->
+<h4 class="text-center fw-bold mt-5">Available Rooms</h4>
+<div class="grid-container">
+  {% for room in rooms %}
+    <a href="{% url 'room-page' room=room.name username=user.username %}" class="grid-item">{{ room.name }}</a>
+  {% endfor %}
+</div>
+
 {% endblock %}

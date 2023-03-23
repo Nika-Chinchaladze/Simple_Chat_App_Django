@@ -66,9 +66,11 @@ def start(request):
 def personal_page(request):
     form = HomeForm()
     current_user = request.user
+    available_rooms = Room.objects.all()
     return render(request, "chat/home.html", {
         "form": form,
-        "user": current_user
+        "user": current_user,
+        "rooms": available_rooms
     })
 
 
@@ -86,9 +88,10 @@ def room(request, room, username):
 
 @login_required
 def checkview(request):
+    present_user = request.user
     if request.method == "POST":
         room_name = request.POST["room_name"]
-        user_name = request.POST["user_name"]
+        user_name = present_user.username
 
         if Room.objects.filter(name=room_name).exists():
             return HttpResponseRedirect(reverse("room-page", kwargs={

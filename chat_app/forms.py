@@ -37,7 +37,5 @@ class LoginModelForm(AuthenticationForm):
 
 
 class HomeForm(forms.Form):
-    room_name = forms.CharField(
-        max_length=1000, widget=forms.TextInput(attrs={"class": "form-control"}))
-    user_name = forms.CharField(
-        max_length=1000, widget=forms.TextInput(attrs={"class": "form-control"}))
+    room_name = forms.CharField(label="Create New Room", max_length=1000,
+                                widget=forms.TextInput(attrs={"class": "form-control"}))
