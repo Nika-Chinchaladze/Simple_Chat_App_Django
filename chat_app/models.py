@@ -3,6 +3,7 @@ from datetime import datetime
 from django.utils.text import slugify
 from django.urls import reverse
 from django.contrib.auth.models import User
+from json import dumps, loads
 
 
 # Create your models here.
@@ -16,12 +17,15 @@ class Room(models.Model):
     def generate_room_url(self):
         return reverse("room", args=[self.slug])
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return f"{self.name}"
+
+
+class RoomUsers(models.Model):
+    username_room = models.CharField(max_length=1000, null=True)
+
+    def __str__(self):
+        return f"{self.username_room}"
 
 
 class Message(models.Model):

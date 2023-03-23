@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from .forms import RegisterModelForm, LoginModelForm, HomeForm
-from .models import Room, Message
+from .models import Room, Message, RoomUsers
 
 # Create your views here.
 
@@ -65,13 +65,20 @@ def start(request):
 def personal_page(request):
     form = HomeForm()
     present_user = request.user
-    my_rooms = Room.objects.filter(user=present_user).all()
-
+    all_rooms = Room.objects.all()
+    my_rooms = all_rooms.filter(user=present_user).all()
+    
+    all_room_users = RoomUsers.objects.values_list("username_room", flat=True)
+    used_rooms = []
+    for item in list(all_room_users):
+        concrete_room = all_rooms.filter(name=item.split("^")[-1]).first()
+        used_rooms.append(concrete_room)
 
     return render(request, "chat/home.html", {
         "form": form,
         "user": present_user,
-        "my_rooms": my_rooms
+        "my_rooms": my_rooms,
+        "used_rooms": used_rooms
     })
 
 
@@ -104,6 +111,22 @@ def room(request, room, username):
     })
 
 
+def room_users(request, room, username):
+    check_user = RoomUsers.objects.values_list("username_room", flat=True)
+    check_point = f"{username}^{room}"
+    if check_point in list(check_user):
+        pass
+    else:
+        new_room_user = RoomUsers(
+            username_room=check_point
+        )
+        new_room_user.save()
+    return HttpResponseRedirect(reverse("room-page", kwargs={
+        "room": room,
+        "username": username
+    }))
+
+
 @login_required
 def checkview(request):
     present_user = request.user
@@ -120,4 +143,3 @@ def checkview(request):
             new_room = Room(name=room_name, user=present_user)
             new_room.save()
             return HttpResponseRedirect(reverse("personal-page"))
-

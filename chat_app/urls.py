@@ -9,5 +9,6 @@ urlpatterns = [
     path("checkview", views.checkview, name="check-view"),
     path("register", views.register_user, name="register-user"),
     path("login", views.login_user, name="login-user"),
-    path("logout", views.logout_user, name="logout-user")
+    path("logout", views.logout_user, name="logout-user"),
+    path("room-users/<str:room>/<str:username>", views.room_users, name="room-users")
 ]

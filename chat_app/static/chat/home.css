@@ -79,9 +79,8 @@ input[type=submit]:hover {
     padding: 10px;
     border-radius: 5px;
 }
-.grid-item {
+.grid-item-1, .grid-item-2 {
     display: block;
-    background-color: rgba(29, 100, 32, 0.678);
     color: white;
     border: 1px solid rgba(0, 0, 0, 0.8);
     padding: 15px;
@@ -91,7 +90,14 @@ input[type=submit]:hover {
     margin: 5px;
     border-radius: 5px;
 }
-.grid-item:hover {
+.grid-item-1 {
+    background-color: rgba(29, 100, 32, 0.678);
+}
+.grid-item-2 {
+    background-color: rgba(36, 11, 34, 0.678);
+}
+
+.grid-item-1:hover, .grid-item-2:hover {
     background-color: antiquewhite;
     color: rgba(3, 3, 70, 0.897);
 }

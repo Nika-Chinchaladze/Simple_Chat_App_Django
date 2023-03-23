@@ -26,7 +26,16 @@
 <h4 class="text-center fw-bold mt-5">My Rooms</h4>
 <div class="grid-container">
   {% for room in my_rooms %}
-    <a href="{% url 'room-page' room=room.name username=user.username %}" class="grid-item">{{ room.name }}</a>
+    <a href="{% url 'room-users' room=room.name username=user.username %}" class="grid-item-1">{{ room.name }}</a>
+  {% endfor %}
+</div>
+
+
+<!-- Messages Rooms -->
+<h4 class="text-center fw-bold mt-5">Already Used Rooms</h4>
+<div class="grid-container">
+  {% for room in used_rooms %}
+    <a href="{% url 'room-page' room=room.name username=user.username %}" class="grid-item-2">{{ room.name }}</a>
   {% endfor %}
 </div>
 
