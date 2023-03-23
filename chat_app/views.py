@@ -11,7 +11,6 @@ from .models import Room, Message
 # Create your views here.
 
 
-
 # ====================================== AUTHENTICATION SECTION ======================================= #
 def register_user(request):
     present_user = request.user
@@ -65,23 +64,42 @@ def start(request):
 @login_required
 def personal_page(request):
     form = HomeForm()
-    current_user = request.user
-    available_rooms = Room.objects.all()
+    present_user = request.user
+    my_rooms = Room.objects.filter(user=present_user).all()
+
+
     return render(request, "chat/home.html", {
         "form": form,
-        "user": current_user,
-        "rooms": available_rooms
+        "user": present_user,
+        "my_rooms": my_rooms
     })
 
 
 @login_required
 def room(request, room, username):
     present_user = request.user
+    if request.method == "POST":
+        room_object = Room.objects.get(id=request.POST["room_id"])
+        message = request.POST["message"]
+
+        new_message = Message(
+            value=message,
+            user=present_user,
+            room=room_object
+        )
+        new_message.save()
+        return HttpResponseRedirect(reverse("room-page", kwargs={
+            "room": room_object.name,
+            "username": present_user.username
+        }))
+
     room_details = Room.objects.get(name=room)
+    room_messages = Message.objects.filter(room=room_details).all()
     return render(request, "chat/room.html", {
         "room": room,
         "username": username,
         "room_details": room_details,
+        "room_messages": room_messages,
         "user": present_user
     })
 
@@ -99,34 +117,7 @@ def checkview(request):
                 "username": user_name
             }))
         else:
-            new_room = Room(name=room_name)
+            new_room = Room(name=room_name, user=present_user)
             new_room.save()
-            return HttpResponseRedirect(reverse("room-page", kwargs={
-                "room": room_name,
-                "username": user_name
-            }))
+            return HttpResponseRedirect(reverse("personal-page"))
 
-
-@login_required
-def send(request):
-    if request.method == "POST":
-        user_name = request.POST["username"]
-        room_object = Room.objects.get(id=request.POST["room_id"])
-        message = request.POST["message"]
-
-        new_message = Message(
-            value=message,
-            user=user_name,
-            room=room_object
-        )
-        new_message.save()
-        return HttpResponse("Message has been sent, Successfully!")
-
-
-@login_required
-def get_message(request, room):
-    chosen_room = Room.objects.get(name=room)
-    messages = Message.objects.filter(room=chosen_room).all()
-    return JsonResponse({
-        "messages": list(messages.values())
-    })

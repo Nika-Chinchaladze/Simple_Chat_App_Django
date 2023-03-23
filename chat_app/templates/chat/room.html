@@ -11,16 +11,17 @@
   
   
 {% block content %}
-<h2>{{ room }} - {{ user.username }}</h2>
+<h2 class="text-center">{{ room }} - {{ user.username }}</h2>
 
 <div id="display">
-  
+  {% for msg in room_messages %}
+    <div>{{ msg.user.username }} {{ msg.value }} {{ msg.date }}</div>
+  {% endfor %}
 </div>
 
-<div class="container">
-  <form id="post-form">
+<div class="my-container">
+  <form id="post-form" method="POST">
       {% csrf_token %}
-      <input type="hidden" name="username" id="username" value="{{ username }}"/>
       <input type="hidden" name="room_id" id="room_id" value="{{ room_details.id }}"/>
       <input type="text" name="message" id="message" width="100px" />
       <input type="submit" value="Send">
@@ -32,48 +33,4 @@
 
 {% block js_logic %}
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-
-<script>
-
-// For loading message data:
-$(document).ready(function(){
-  setInterval(function(){
-    $.ajax({
-      type: "GET",
-      url: "/get-messages/{{ room }}/",
-      success: function(response){
-        $("#display").empty();
-        for (var key in response.messages){
-          var temp="<div class='container darker'><b>" + response.messages[key].user + "</b><p>"+response.messages[key].value + "</p><span class='time-left'>" + response.messages[key].date + "</span></div>";
-          $("#display").append(temp);
-        }
-      },
-      error: function(response){
-        alert("An error occured!")
-      }
-    });
-  }, 1000);
-})
-
-// For submit message:
-$(document).on('submit','#post-form', function(e){
-  e.preventDefault();
-
-  $.ajax({
-    type:'POST',
-    url:'/send',
-    data:{
-        username:$('#username').val(),
-        room_id:$('#room_id').val(),
-        message:$('#message').val(),
-        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-    },
-    success: function(data){
-        console.log("message was sent!");
-    }
-  });
-  document.getElementById('message').value = '';
-});
-
-</script>
 {% endblock  %}
