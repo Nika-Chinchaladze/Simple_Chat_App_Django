@@ -1,72 +1,93 @@
 .my-container {
-border: 2px solid #dedede;
-background-color: #f1f1f1;
-border-radius: 5px;
-padding: 10px;
-margin: 10px 0;
+    width: 79%;
+    margin: 10px auto;
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
 }
 
 .darker {
-border-color: #ccc;
-background-color: #ddd;
+    border-color: #ccc;
+    background-color: #ddd;
 }
 
 .my-container::after {
-content: "";
-clear: both;
-display: table;
+    content: "";
+    clear: both;
+    display: table;
 }
 
 .my-container img {
-float: left;
-max-width: 60px;
-width: 100%;
-margin-right: 20px;
-border-radius: 50%;
+    float: left;
+    max-width: 60px;
+    width: 100%;
+    margin-right: 20px;
+    border-radius: 50%;
 }
 
 .my-container img.right {
-float: right;
-margin-left: 20px;
-margin-right:0;
+    float: right;
+    margin-left: 20px;
+    margin-right:0;
 }
 
 .time-right {
-float: right;
-color: #aaa;
+    float: right;
+    color: #aaa;
 }
 
 .time-left {
-float: left;
-color: #999;
+    float: left;
+    color: #999;
 }
 
 input[type=text], select {
-width: 100%;
-padding: 12px 20px;
-margin: 8px 0;
-display: inline-block;
-border: 1px solid #ccc;
-border-radius: 4px;
-box-sizing: border-box;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 input[type=submit] {
-width: 100%;
-background-color: #4CAF50;
-color: white;
-padding: 14px 20px;
-margin: 8px 0;
-border: none;
-border-radius: 4px;
-cursor: pointer;
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 input[type=submit]:hover {
-background-color: #45a049;
+    background-color: #45a049;
 }
 
 #display {
-    width: 80%;
+    width: 79.5%;
+    height: 350px;
     margin: auto;
+    overflow-y: scroll;
+}
+
+.message-div {
+    box-sizing: border-box;
+    margin: 15px 5px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(75, 27, 27, 0.74);
+}
+.blue-div {
+    text-align: left;
+    background-color: rgba(32, 32, 219, 0.719);
+    color: white;
+}
+.yellow-div {
+    text-align: right;
+    background-color: rgba(103, 126, 4, 0.719);
+    color: rgb(14, 13, 13);
 }

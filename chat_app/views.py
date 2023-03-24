@@ -4,8 +4,9 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib import messages
 
-from .forms import RegisterModelForm, LoginModelForm, HomeForm
+from .forms import RegisterModelForm, LoginModelForm, HomeForm, SearchForm
 from .models import Room, Message, RoomUsers
 
 # Create your views here.
@@ -63,7 +64,8 @@ def start(request):
 
 @login_required
 def personal_page(request):
-    form = HomeForm()
+    form1 = HomeForm()
+    form2 = SearchForm()
     present_user = request.user
     all_rooms = Room.objects.all()
     my_rooms = all_rooms.filter(user=present_user).all()
@@ -75,7 +77,8 @@ def personal_page(request):
         used_rooms.append(concrete_room)
 
     return render(request, "chat/home.html", {
-        "form": form,
+        "form1": form1,
+        "form2": form2,
         "user": present_user,
         "my_rooms": my_rooms,
         "used_rooms": used_rooms
@@ -143,3 +146,21 @@ def checkview(request):
             new_room = Room(name=room_name, user=present_user)
             new_room.save()
             return HttpResponseRedirect(reverse("personal-page"))
+
+
+@login_required
+def searchview(request):
+    present_user = request.user
+    if request.method == "POST":
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            room_name = form.cleaned_data["room_name"]
+            searched_room = Room.objects.filter(name=room_name).first()
+            if searched_room is not None:
+                return render(request, "chat/search.html", {
+                    "searched_room": searched_room,
+                    "user": present_user
+                })
+            else:
+                messages.error(request, "Not Found")
+                return HttpResponseRedirect(reverse("personal-page"))

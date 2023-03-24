@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+    <title>Search Page</title>
+{% endblock  %}
+
+
+{% block content %}
+    <a href="{% url 'room-users' room=searched_room.name username=user.username %}" class="grid-item-2">{{ searched_room.name }}</a>
+{% endblock %}

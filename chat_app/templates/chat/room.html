@@ -11,11 +11,16 @@
   
   
 {% block content %}
-<h2 class="text-center">{{ room }} - {{ user.username }}</h2>
+<h2 class="text-center mt-4">{{ room }} Room</h2>
+<h4 class="text-center mt-3 mb-3">Creator {{ user.username }}</h4>
 
 <div id="display">
   {% for msg in room_messages %}
-    <div>{{ msg.user.username }} {{ msg.value }} {{ msg.date }}</div>
+    <div class="message-div {% if msg.user.username == user.username %} blue-div {% else %} yellow-div {% endif %}">
+      <h4 class="p-0 m-0" style="font-size: 20px;">By {{ msg.user.username }}</h4>
+      <p class="p-0 m-0 mt-2 mb-2" style="font-size: 15px;">{{ msg.value }}</p>
+      <span style="font-size: 12px;">{{ msg.date }}</span>
+    </div>
   {% endfor %}
 </div>
 
@@ -33,4 +38,12 @@
 
 {% block js_logic %}
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+<script>
+
+var messageBody = document.querySelector("#display");
+messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
+</script>
+
 {% endblock  %}

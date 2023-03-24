@@ -1,29 +1,59 @@
 {% extends "base.html" %}
 {% load static %}
 
+<!-- title section -->
 {% block title %}
   <title>Personal Page</title>
 {% endblock %}
 
+<!-- css section -->
 {% block css_styles %}
   <link rel="stylesheet" href="{% static 'chat/home.css' %}">
 {% endblock %}
-  
+
+<!-- content section -->
 {% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible fade show m-2 text-center" role="alert">
+      <strong>Sorry!</strong> {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+{% endif %}
+
+
 <div align="center" class="mt-5">
   <h2>Hello {{ user.username }}</h2>
 </div>
 
-<div class="my-container">
+<div class="d-flex justify-content-center align-items-center">
+  <!-- room creation form -->
+  <div class="my-container me-2">
     <form id="post-form" method="POST" action="{% url 'check-view' %}">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success rounded-1 w-100">Create</button>
+        {{ form1.as_p }}
+        <input type="hidden" id="hidden-create" name="hidden-create" value="hidden-create">
+        <button type="submit" class="btn btn-success rounded-1 w-100">Create Room</button>
     </form>
+  </div>
+
+  <!-- room searching form -->
+  <div class="my-container ms-2">
+    <form id="post-form" method="POST" action="{% url 'search-view' %}">
+        {% csrf_token %}
+        {{ form2.as_p }}
+        <input type="hidden" id="hidden-search" name="hidden-search" value="hidden-search">
+        <button type="submit" class="btn btn-success rounded-1 w-100">Search Room</button>
+    </form>
+  </div>
+
 </div>
 
+
 <!-- Available Rooms -->
-<h4 class="text-center fw-bold mt-5">My Rooms</h4>
+<h4 class="text-center fw-bold mt-5">Rooms Created By Me</h4>
 <div class="grid-container">
   {% for room in my_rooms %}
     <a href="{% url 'room-users' room=room.name username=user.username %}" class="grid-item-1">{{ room.name }}</a>
