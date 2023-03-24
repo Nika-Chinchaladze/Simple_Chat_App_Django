@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponseBadRequest, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -105,14 +105,31 @@ def room(request, room, username):
         }))
 
     room_details = Room.objects.get(name=room)
-    room_messages = Message.objects.filter(room=room_details).all()
     return render(request, "chat/room.html", {
         "room": room,
         "username": username,
         "room_details": room_details,
-        "room_messages": room_messages,
         "user": present_user
     })
+
+
+@login_required
+def get_messages(request, room):
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    
+    if is_ajax:
+        if request.method == "GET":
+            room_details = Room.objects.get(name=room)
+            room_messages = Message.objects.filter(room=room_details).all()
+            return JsonResponse({
+                "messages": list(room_messages.values())
+            })
+        else:
+            return JsonResponse({
+                "status": "Invalid Request"
+            })
+    else:
+        HttpResponseBadRequest("Invalid Request")
 
 
 def room_users(request, room, username):

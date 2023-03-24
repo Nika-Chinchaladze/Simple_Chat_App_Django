@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load poll_extras %}
 
 {% block title %}
   <title>Room Page</title>
@@ -20,13 +21,7 @@
 
 
 <div id="display">
-  {% for msg in room_messages %}
-    <div class="message-div {% if msg.user.username == user.username %} blue-div {% else %} yellow-div {% endif %}">
-      <h4 class="p-0 m-0" style="font-size: 20px;">By {{ msg.user.username }}</h4>
-      <p class="p-0 m-0 mt-2 mb-2" style="font-size: 15px;">{{ msg.value }}</p>
-      <span style="font-size: 12px;">{{ msg.date }}</span>
-    </div>
-  {% endfor %}
+
 </div>
 
 <div class="my-container">
@@ -43,15 +38,37 @@
 
 {% block js_logic %}
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
 <script>
 // scroll always down
 var messageBody = document.querySelector("#display");
 messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
 // get data with ajax
-$.ajax({
-  url: {% url 'room-page' %},
-  type: "GET"
+$(document).ready(function() {
+  
+  setInterval(function() {
+    $.ajax({
+      type: "GET",
+      url: "{% url 'get-messages' room=room %}",
+      success: function(response) {
+        $("#display").empty();
+
+        for (var i = 0; i < response.messages.length; i++) {
+          
+          var message_item = `<div class='message-div yellow-div'>` +
+            `<h4 class='p-0 m-0' style='font-size: 20px;'>By ${response.messages[i].user_id}</h4>` +
+            `<p class='p-0 m-0 mt-2 mb-2' style='font-size: 15px;'>${response.messages[i].value}</p>` +
+            `<span style='font-size: 12px;'>${response.messages[i].date}</span></div>`;
+          
+            $("#display").append(message_item);
+        }
+      },
+      error: function(response) {
+        console.log("error happened!");
+      }
+    });
+  }, 5000);
 })
 
 </script>
