@@ -72,26 +72,31 @@ input[type=submit]:hover {
     height: 350px;
     margin: auto;
     overflow-y: scroll;
+    position: relative;
 }
 .head-tag {
     width: 79.5%;
     margin: auto;
 }
-
 .message-div {
     box-sizing: border-box;
-    margin: 15px 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding: 5px 15px;
     border-radius: 10px;
     border: 1px solid rgba(75, 27, 27, 0.74);
+    position: relative;
+    width: 48%;
 }
 .blue-div {
     text-align: left;
+    left: 5px;
     background-color: rgba(32, 32, 219, 0.719);
     color: white;
 }
 .yellow-div {
     text-align: right;
+    right: -525px;
     background-color: rgba(103, 126, 4, 0.719);
     color: rgb(14, 13, 13);
 }

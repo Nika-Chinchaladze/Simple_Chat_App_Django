@@ -8,13 +8,21 @@
 
 {% block css_styles %}
     <link rel="stylesheet" href="{% static 'chat/search.css' %}">
+    <link rel="stylesheet" href="{% static 'chat/all.css' %}">
 {% endblock %}
 
 {% block content %}
     <h3 class="text-center mt-4 mb-3">All Rooms In One Space</h3>
     <div class="outer-div">
         {% for room in rooms %}
-            <a href="{% url 'room-users' room=room.name username=user.username %}" class="all-room">{{ room.name }}</a>
+            <figure class="my-card">
+                <div class="profile-image"><img src="{% static 'chat/img/user_icon.png' %}" alt="profile-sample2" /></div>
+                <figcaption>
+                  <h3>{{ room.name }}</h3>
+                  <h5>{{ room.user.first_name }} {{ room.user.last_name }}</h5>
+                  <h3><a class="join-link" href="{% url 'room-users' room=room.name username=user.username %}">Join Chat Room</a></h3>
+                </figcaption>
+            </figure>
         {% endfor %}
     </div>
 {% endblock %}

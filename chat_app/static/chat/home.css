@@ -69,17 +69,21 @@ input[type=submit]:hover {
 }
 
 .grid-container {
-    width: 85%;
+    box-sizing: border-box;
+    width: 500px;
+    height: 350px;
     margin: auto;
     margin-top: 20px;
     margin-bottom: 100px;
-    display: grid;
-    grid-template-columns: auto auto auto;
     background-color: #a8d187cc;
     padding: 10px;
     border-radius: 5px;
+    overflow-y: scroll;
 }
 .grid-item-1, .grid-item-2 {
+    box-sizing: border-box;
+    width: 450px;
+    height: 80px;
     display: block;
     color: white;
     border: 1px solid rgba(0, 0, 0, 0.8);
@@ -87,7 +91,7 @@ input[type=submit]:hover {
     font-size: 20px;
     text-align: center;
     text-decoration: none;
-    margin: 5px;
+    margin: 10px 5px;
     border-radius: 5px;
 }
 .grid-item-1 {

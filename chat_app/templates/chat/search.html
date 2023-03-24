@@ -8,11 +8,17 @@
 
 {% block css_styles %}
     <link rel="stylesheet" href="{% static 'chat/search.css' %}">
+    <link rel="stylesheet" href="{% static 'chat/card.css' %}">
 {% endblock %}
 
 {% block content %}
     <h3 class="text-center mt-4 mb-3">Search Result</h3>
-    <div class="outer-div">
-        <a href="{% url 'room-users' room=searched_room.name username=user.username %}" class="found-room">{{ searched_room.name }}</a>
-    </div>
+    <figure class="snip1559">
+        <div class="profile-image"><img src="{% static 'chat/img/user_icon.png' %}" alt="profile-sample2" /></div>
+        <figcaption>
+          <h3>{{ searched_room.name }}</h3>
+          <h5>{{ searched_room.user.first_name }} {{ searched_room.user.last_name }}</h5>
+          <h3><a class="join-link" href="{% url 'room-users' room=searched_room.name username=user.username %}">Join Chat Room</a></h3>
+        </figcaption>
+    </figure>
 {% endblock %}
