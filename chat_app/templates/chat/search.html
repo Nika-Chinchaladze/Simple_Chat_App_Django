@@ -6,7 +6,13 @@
     <title>Search Page</title>
 {% endblock  %}
 
+{% block css_styles %}
+    <link rel="stylesheet" href="{% static 'chat/search.css' %}">
+{% endblock %}
 
 {% block content %}
-    <a href="{% url 'room-users' room=searched_room.name username=user.username %}" class="grid-item-2">{{ searched_room.name }}</a>
+    <h3 class="text-center mt-4 mb-3">Search Result</h3>
+    <div class="outer-div">
+        <a href="{% url 'room-users' room=searched_room.name username=user.username %}" class="found-room">{{ searched_room.name }}</a>
+    </div>
 {% endblock %}

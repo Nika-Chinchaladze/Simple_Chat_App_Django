@@ -1,0 +1,26 @@
+.outer-div {
+    width: 50%;
+    margin: 30px auto;
+}
+.found-room, .all-room {
+    display: block;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    background-color: rgba(116, 87, 15, 0.842);
+    border-radius: 5px;
+    border: 2px solid rgba(46, 34, 3, 0.89);
+}
+.found-room:hover, .all-room:hover {
+    background-color: rgba(27, 102, 27, 0.815);
+    border: 2px solid rgb(8, 43, 8);
+}
+.found-room {
+    padding: 15px;
+    margin: 10px auto;
+}
+.all-room {
+    padding: 30px 15px;
+    margin: 15px auto;
+}

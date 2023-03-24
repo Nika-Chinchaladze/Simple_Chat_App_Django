@@ -11,8 +11,13 @@
   
   
 {% block content %}
-<h2 class="text-center mt-4">{{ room }} Room</h2>
-<h4 class="text-center mt-3 mb-3">Creator {{ user.username }}</h4>
+<h5 class="d-flex justify-content-between align-items-center mt-4 head-tag">Room Name: {{ room }}
+  {% if user.username == room_details.user.username %}
+    <a href="{% url 'delete-room' room_id=room_details.id room_name=room_details.name %}" class="delete-link">Delete This Room Permanently</a>
+  {% endif %}
+</h5>
+<h5 class="text-left mt-3 mb-3 head-tag">Room Creator: {{ room_details.user.username }}</h5>
+
 
 <div id="display">
   {% for msg in room_messages %}
@@ -29,7 +34,7 @@
       {% csrf_token %}
       <input type="hidden" name="room_id" id="room_id" value="{{ room_details.id }}"/>
       <input type="text" name="message" id="message" width="100px" />
-      <input type="submit" value="Send">
+      <input type="submit" value="Send Message">
   </form>
 </div>
 

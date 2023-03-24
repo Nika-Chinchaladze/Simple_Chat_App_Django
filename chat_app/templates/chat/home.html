@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load poll_extras %}
 
 <!-- title section -->
 {% block title %}
@@ -17,7 +18,7 @@
 {% if messages %}
     {% for message in messages %}
     <div class="alert alert-warning alert-dismissible fade show m-2 text-center" role="alert">
-      <strong>Sorry!</strong> {{ message }}
+      <strong>{{ message }}</strong>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
@@ -35,7 +36,7 @@
         {% csrf_token %}
         {{ form1.as_p }}
         <input type="hidden" id="hidden-create" name="hidden-create" value="hidden-create">
-        <button type="submit" class="btn btn-success rounded-1 w-100">Create Room</button>
+        <button type="submit" class="btn btn-primary rounded-1 w-100">Create Room</button>
     </form>
   </div>
 
@@ -53,7 +54,7 @@
 
 
 <!-- Available Rooms -->
-<h4 class="text-center fw-bold mt-5">Rooms Created By Me</h4>
+<h4 class="text-center fw-bold mt-5">My Rooms</h4>
 <div class="grid-container">
   {% for room in my_rooms %}
     <a href="{% url 'room-users' room=room.name username=user.username %}" class="grid-item-1">{{ room.name }}</a>
@@ -62,10 +63,12 @@
 
 
 <!-- Messages Rooms -->
-<h4 class="text-center fw-bold mt-5">Already Used Rooms</h4>
+<h4 class="text-center fw-bold mt-5">Used Rooms</h4>
 <div class="grid-container">
   {% for room in used_rooms %}
-    <a href="{% url 'room-page' room=room.name username=user.username %}" class="grid-item-2">{{ room.name }}</a>
+    {% if room|check %}
+      <a href="{% url 'room-page' room=room.name username=user.username %}" class="grid-item-2">{{ room.name }}</a>
+    {% endif %}
   {% endfor %}
 </div>
 

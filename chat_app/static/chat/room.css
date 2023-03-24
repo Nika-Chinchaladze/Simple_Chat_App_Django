@@ -73,6 +73,10 @@ input[type=submit]:hover {
     margin: auto;
     overflow-y: scroll;
 }
+.head-tag {
+    width: 79.5%;
+    margin: auto;
+}
 
 .message-div {
     box-sizing: border-box;
@@ -90,4 +94,9 @@ input[type=submit]:hover {
     text-align: right;
     background-color: rgba(103, 126, 4, 0.719);
     color: rgb(14, 13, 13);
+}
+.delete-link {
+    text-decoration: none;
+    color: red;
+    font-size: 15px;
 }

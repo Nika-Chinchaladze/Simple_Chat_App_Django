@@ -69,13 +69,14 @@ def personal_page(request):
     present_user = request.user
     all_rooms = Room.objects.all()
     my_rooms = all_rooms.filter(user=present_user).all()
-    
+
     all_room_users = RoomUsers.objects.values_list("username_room", flat=True)
     used_rooms = []
     for item in list(all_room_users):
-        concrete_room = all_rooms.filter(name=item.split("^")[-1]).first()
-        used_rooms.append(concrete_room)
-
+        if item.split("^")[0] == present_user.username:
+            concrete_room = all_rooms.filter(name=item.split("^")[-1]).first()
+            used_rooms.append(concrete_room)
+    
     return render(request, "chat/home.html", {
         "form1": form1,
         "form2": form2,
@@ -164,3 +165,28 @@ def searchview(request):
             else:
                 messages.error(request, "Not Found")
                 return HttpResponseRedirect(reverse("personal-page"))
+
+
+@login_required
+def all_rooms(request):
+    present_user = request.user
+    rooms = Room.objects.all()
+    return render(request, "chat/all.html", {
+        "rooms": rooms,
+        "user": present_user
+    })
+
+
+@login_required
+def delete_room(request, room_id, room_name):
+    present_user = request.user
+    # delete chosen room:
+    chosen_room = Room.objects.get(id=room_id)
+    chosen_room.delete()
+    # delete room - users:
+    all_room_users = RoomUsers.objects.all()
+    for item in all_room_users:
+        if item.username_room.split("^")[-1] == room_name:
+            item.delete()
+    messages.success(request, "Room Has Been Deleted")
+    return HttpResponseRedirect(reverse("personal-page"))

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+    <title>All Page</title>
+{% endblock  %}
+
+{% block css_styles %}
+    <link rel="stylesheet" href="{% static 'chat/search.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h3 class="text-center mt-4 mb-3">All Rooms In One Space</h3>
+    <div class="outer-div">
+        {% for room in rooms %}
+            <a href="{% url 'room-users' room=room.name username=user.username %}" class="all-room">{{ room.name }}</a>
+        {% endfor %}
+    </div>
+{% endblock %}
