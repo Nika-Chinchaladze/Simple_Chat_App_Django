@@ -14,5 +14,6 @@ urlpatterns = [
     path("searchview", views.searchview, name="search-view"),
     path("all-rooms", views.all_rooms, name="all-rooms"),
     path("delete-room/<int:room_id>/<str:room_name>", views.delete_room, name="delete-room"),
-    path("get-messages/<str:room>", views.get_messages, name="get-messages")
+    path("get-messages/<str:room>", views.get_messages, name="get-messages"),
+    path("send-messages", views.send_messages, name="send-messages")
 ]

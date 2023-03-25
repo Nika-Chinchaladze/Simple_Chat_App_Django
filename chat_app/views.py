@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -76,7 +76,7 @@ def personal_page(request):
         if item.split("^")[0] == present_user.username:
             concrete_room = all_rooms.filter(name=item.split("^")[-1]).first()
             used_rooms.append(concrete_room)
-    
+
     return render(request, "chat/home.html", {
         "form1": form1,
         "form2": form2,
@@ -89,21 +89,6 @@ def personal_page(request):
 @login_required
 def room(request, room, username):
     present_user = request.user
-    if request.method == "POST":
-        room_object = Room.objects.get(id=request.POST["room_id"])
-        message = request.POST["message"]
-
-        new_message = Message(
-            value=message,
-            user=present_user,
-            room=room_object
-        )
-        new_message.save()
-        return HttpResponseRedirect(reverse("room-page", kwargs={
-            "room": room_object.name,
-            "username": present_user.username
-        }))
-
     room_details = Room.objects.get(name=room)
     return render(request, "chat/room.html", {
         "room": room,
@@ -114,15 +99,47 @@ def room(request, room, username):
 
 
 @login_required
+def send_messages(request):
+    present_user = request.user
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    print("hello")
+    if is_ajax:
+        if request.method == "POST":
+            room_object = Room.objects.get(id=request.POST["room_id"])
+            message = request.POST["message"]
+
+            new_message = Message(
+                value=message,
+                user=present_user,
+                room=room_object
+            )
+            new_message.save()
+            return HttpResponse("Done - Message Sent!")
+    else:
+        HttpResponseBadRequest("Invalid Request") 
+
+
+@login_required
 def get_messages(request, room):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-    
+
     if is_ajax:
         if request.method == "GET":
             room_details = Room.objects.get(name=room)
             room_messages = Message.objects.filter(room=room_details).all()
+
+            final_messages = []
+            for msg in room_messages:
+                final_messages.append({
+                    "id": msg.id,
+                    "value": msg.value,
+                    "date": str(msg.date).split(".")[0],
+                    "user": msg.user.username,
+                    "room": msg.room.name
+                })
+
             return JsonResponse({
-                "messages": list(room_messages.values())
+                "messages": final_messages
             })
         else:
             return JsonResponse({

@@ -17,7 +17,7 @@
     <a href="{% url 'delete-room' room_id=room_details.id room_name=room_details.name %}" class="delete-link">Delete This Room Permanently</a>
   {% endif %}
 </h5>
-<h5 class="text-left mt-3 mb-3 head-tag">Room Creator: {{ room_details.user.username }}</h5>
+<h5 class="text-left mt-3 mb-3 head-tag">Room Creator: <strong>{{ room_details.user.username }}</strong></h5>
 
 
 <div id="display">
@@ -25,7 +25,7 @@
 </div>
 
 <div class="my-container">
-  <form id="post-form" method="POST">
+  <form id="post-form">
       {% csrf_token %}
       <input type="hidden" name="room_id" id="room_id" value="{{ room_details.id }}"/>
       <input type="text" name="message" id="message" width="100px" />
@@ -40,10 +40,6 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
 <script>
-// scroll always down
-var messageBody = document.querySelector("#display");
-messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
-
 // get data with ajax
 $(document).ready(function() {
   
@@ -54,23 +50,56 @@ $(document).ready(function() {
       success: function(response) {
         $("#display").empty();
 
+        var current_username = "{{ user.username }}";
+
         for (var i = 0; i < response.messages.length; i++) {
+
+          var start_html = "";
+          var loop_username = response.messages[i].user;
+          if (loop_username == current_username) {
+            start_html = `<div class='message-div blue-div'>`;
+          } else {
+            start_html = `<div class='message-div yellow-div'>`;
+          }
           
-          var message_item = `<div class='message-div yellow-div'>` +
-            `<h4 class='p-0 m-0' style='font-size: 20px;'>By ${response.messages[i].user_id}</h4>` +
-            `<p class='p-0 m-0 mt-2 mb-2' style='font-size: 15px;'>${response.messages[i].value}</p>` +
+          var message_item = start_html +
+            `<h4 class='p-0 m-0' style='font-size: 12px;'>By ${response.messages[i].user}</h4>` +
+            `<p class='p-0 m-0 mt-1 mb-1' style='font-size: 14px;'>${response.messages[i].value}</p>` +
             `<span style='font-size: 12px;'>${response.messages[i].date}</span></div>`;
           
             $("#display").append(message_item);
+            // scroll always down
+            var messageBody = document.querySelector("#display");
+            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
         }
       },
       error: function(response) {
         console.log("error happened!");
       }
     });
-  }, 5000);
+  }, 1000);
 })
 
+</script>
+
+<script type="text/javascript">
+  $(document).on('submit','#post-form',function(e){
+    e.preventDefault();
+
+    $.ajax({
+      type:'POST',
+      url:"{% url 'send-messages' %}",
+      data:{
+          room_id:$('#room_id').val(),
+          message:$('#message').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function(data){
+        var answer = data;
+      }
+    });
+    document.getElementById('message').value = ''
+  });
 </script>
 
 {% endblock  %}

@@ -90,13 +90,13 @@ input[type=submit]:hover {
 }
 .blue-div {
     text-align: left;
-    left: 5px;
+    left: 1%;
     background-color: rgba(32, 32, 219, 0.719);
     color: white;
 }
 .yellow-div {
     text-align: right;
-    right: -525px;
+    left: 51%;
     background-color: rgba(103, 126, 4, 0.719);
     color: rgb(14, 13, 13);
 }
@@ -104,4 +104,7 @@ input[type=submit]:hover {
     text-decoration: none;
     color: red;
     font-size: 15px;
+}
+strong {
+    display: inline;
 }
